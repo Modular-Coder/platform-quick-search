@@ -13,6 +13,9 @@ java.sourceCompatibility = JavaVersion.VERSION_11
 
 repositories {
 	mavenCentral()
+	maven {
+		url = uri("https://packages.confluent.io/maven/")
+	}
 }
 
 dependencies {
@@ -23,8 +26,9 @@ dependencies {
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
-	implementation("org.springframework.kafka:spring-kafka")
 	implementation("org.apache.commons:commons-csv:1.8")
+	implementation("org.apache.kafka:kafka_2.12:5.4.1-ccs")
+
 	testImplementation("org.springframework.boot:spring-boot-starter-test") {
 		exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
 	}

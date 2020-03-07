@@ -1,6 +1,6 @@
 package com.dake.pqs.parser
 
-import com.dake.pqs.model.BnbListing
+import com.dake.pqs.model.SimpleListing
 import org.apache.commons.csv.CSVFormat
 import org.apache.commons.csv.CSVRecord
 import org.springframework.stereotype.Component
@@ -19,9 +19,11 @@ class BnbParser {
             .withAllowDuplicateHeaderNames(true)
             .parse(reader)
 
-    fun mapToBnbListing(record: CSVRecord): BnbListing = BnbListing()
+    fun mapToSimpleListing(record: CSVRecord): SimpleListing = SimpleListing(record.get(1), record.get(7))
 
-    fun parseFileAndPrint(fileName: String) = parseFile(createReader(fileName)).map { record: CSVRecord -> println(record.get(1)) }
+    fun mapToSimpleListings(records: Iterable<CSVRecord>): List<SimpleListing> = records.map { record -> mapToSimpleListing(record) }
 
-    fun parse() = parseFileAndPrint("c:/Projects/resources/listings.csv")
+    fun parse(fileUrl: String): List<SimpleListing> = mapToSimpleListings(parseFile(createReader(fileUrl)))
+
+    fun parseFileAndPrint(fileUrl: String) = parse(fileUrl).map { println(it) }
 }
