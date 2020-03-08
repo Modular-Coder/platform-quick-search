@@ -8,7 +8,7 @@ import java.io.FileReader
 import java.io.Reader
 
 @Component
-class BnbParser {
+class BnbParser() {
     fun createReader(fileUrl: String) = FileReader(fileUrl)
 
     fun parseFile(reader: Reader): Iterable<CSVRecord> = CSVFormat.DEFAULT
@@ -25,5 +25,6 @@ class BnbParser {
 
     fun parse(fileUrl: String): List<SimpleListing> = mapToSimpleListings(parseFile(createReader(fileUrl)))
 
-    fun parseFileAndPrint(fileUrl: String) = parse(fileUrl).map { println(it) }
+    fun filterForKeyword(keyword: String, listings: List<SimpleListing>): List<SimpleListing> = listings.filter { simpleListing -> simpleListing.body.contains(keyword) }
+
 }

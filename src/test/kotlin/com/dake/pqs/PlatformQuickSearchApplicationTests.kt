@@ -6,21 +6,22 @@ import com.dake.pqs.parser.BnbParser
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.apache.kafka.clients.consumer.ConsumerRecords
 import org.apache.kafka.clients.producer.ProducerRecord
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import java.util.*
 
-@Disabled
 class PlatformQuickSearchApplicationTests {
-	val fileUrl: String = "c:/Projects/resources/listings.csv"
+    val fileUrl: String = "c:/Projects/resources/listings.csv"
+    val parser = BnbParser()
 
-	@Test
-	fun testParse() {
-		BnbParser().parseFileAndPrint(fileUrl)
-	}
+    @Test
+    fun testParse() {
+        var listings: List<SimpleListing> = parser.parse(fileUrl)
+        listings = parser.filterForKeyword("puppy", listings)
+        listings.forEach(::print)
+    }
 
-	@Test
-	fun kafkaIsWorking() {
+    @Test
+    fun kafkaIsWorking() {
 		val topic = "SimpleListing"
 		val key = UUID.randomUUID().toString()
 		val value = SimpleListing("my url", "my body")
